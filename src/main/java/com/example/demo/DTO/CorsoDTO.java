@@ -54,4 +54,5 @@ public class CorsoDTO {
 
     public List<Discente> getListaDiscenti () {return listaDiscenti;}
     public void addListaDiscenti (Discente discente) {this.listaDiscenti.add(discente);}
+    public void removeDiscenti (Discente discente) {this.listaDiscenti.remove(discente);}
 }

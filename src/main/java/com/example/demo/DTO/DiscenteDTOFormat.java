@@ -1,10 +1,9 @@
 package com.example.demo.DTO;
-import com.example.demo.entity.Corso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DiscenteDTONoCorso {
+public class DiscenteDTOFormat {
     private int id;
     private String nome;
     private String cognome;

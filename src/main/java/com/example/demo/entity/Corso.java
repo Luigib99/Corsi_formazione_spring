@@ -67,9 +67,13 @@ public class Corso {
     public void setDocente (Docente docente)  {this.docente = docente;}
 
     public List<Discente> getListaDiscenti () {return listaDiscenti;}
-    public void addListaDiscenti (Discente discente) {this.listaDiscenti.add(discente);}
     public void setListaDiscenti (List<Discente> listaDiscenti)
     {
         this.listaDiscenti = listaDiscenti;
+    }
+    public void addDiscenti (Discente discente) {this.listaDiscenti.add(discente);}
+    public void removeDiscenti (Discente discente)
+    {
+        this.listaDiscenti.remove(discente);
     }
 }

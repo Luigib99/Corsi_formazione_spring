@@ -2,30 +2,26 @@ package com.example.demo.utils;
 import com.example.demo.DTO.*;
 import com.example.demo.entity.Corso;
 import com.example.demo.entity.Discente;
-import com.example.demo.entity.Docente;
 import com.example.demo.repository.CorsoRepository;
-import com.example.demo.repository.DiscenteRepository;
-import jakarta.persistence.EntityNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class DiscenteConverter {
-    public static DiscenteDTONoCorso DiscenteIgnore(Discente discente)
+    public static DiscenteDTOFormat DiscenteIgnore(Discente discente)
     {
-        DiscenteDTONoCorso discenteDTONoCorso = new DiscenteDTONoCorso();
-        discenteDTONoCorso.setId(discente.getId());
-        discenteDTONoCorso.setNome(discente.getNome());
-        discenteDTONoCorso.setCognome(discente.getCognome());
-        discenteDTONoCorso.setMatricola(discente.getMatricola());
-        discenteDTONoCorso.setDataNascita(discente.getDataNascita());
+        DiscenteDTOFormat discenteDTOFormat = new DiscenteDTOFormat();
+        discenteDTOFormat.setId(discente.getId());
+        discenteDTOFormat.setNome(discente.getNome());
+        discenteDTOFormat.setCognome(discente.getCognome());
+        discenteDTOFormat.setMatricola(discente.getMatricola());
+        discenteDTOFormat.setDataNascita(discente.getDataNascita());
         List<Corso> listaCorsi = discente.getListaCorso();
         for(Corso corso : listaCorsi)
         {
-            discenteDTONoCorso.addNomeCorso(corso.getNomeCorso());
+            discenteDTOFormat.addNomeCorso(corso.getNomeCorso());
         }
-        return discenteDTONoCorso;
+        return discenteDTOFormat;
     };
 
     public static DiscenteDTO entityToDTO(Discente discente)

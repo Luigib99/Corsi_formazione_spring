@@ -3,12 +3,12 @@ package com.example.demo.DTO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DocenteDTO {
+public class DocenteDTOFormat {
 
     private Integer id;
     private String nome;
     private String cognome;
-    private List<CorsoDTO> listaCorsi = new ArrayList<CorsoDTO>();
+    private List<String> listaCorsi = new ArrayList<String>();
 
     public void setId(Integer id)
     {
@@ -33,15 +33,15 @@ public class DocenteDTO {
         return cognome;
     }
 
-    public void addCorso(CorsoDTO corso)
+    public void addCorso(String nomeCorso)
     {
-        listaCorsi.add(corso);
+        listaCorsi.add(nomeCorso);
     }
-    public List<CorsoDTO> getListaCorsi()
+    public List<String> getListaCorsi()
     {
         return listaCorsi;
     }
-    public void setListaCorsi(List<CorsoDTO> listaCorsi)
+    public void setListaCorsi(List<String> listaCorsi)
     {
         this.listaCorsi = listaCorsi;
     }

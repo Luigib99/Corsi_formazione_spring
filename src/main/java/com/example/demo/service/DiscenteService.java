@@ -1,18 +1,13 @@
 package com.example.demo.service;
 
-import com.example.demo.DTO.CorsoDTO;
-import com.example.demo.DTO.CorsoDTONoDocente;
 import com.example.demo.DTO.DiscenteDTO;
-import com.example.demo.DTO.DiscenteDTONoCorso;
+import com.example.demo.DTO.DiscenteDTOFormat;
 import com.example.demo.entity.Corso;
 import com.example.demo.entity.Discente;
-import com.example.demo.entity.Docente;
 import com.example.demo.repository.CorsoRepository;
 import com.example.demo.repository.DiscenteRepository;
 import com.example.demo.repository.DocenteRepository;
-import com.example.demo.utils.CorsoConverter;
 import com.example.demo.utils.DiscenteConverter;
-import com.example.demo.utils.DocenteConverter;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -33,13 +28,14 @@ public class DiscenteService {
         this.docenteRepository = docenteRepository;
     }
 
-    public DiscenteDTONoCorso getDiscenteById(Integer id)
+    //READ
+    public DiscenteDTOFormat getDiscente(Integer id)
     {
         Optional<Discente> discente= discenteRepository.findById(id);
         if(discente.isPresent())
         {
-            DiscenteDTONoCorso discenteDTONoCorso = DiscenteConverter.DiscenteIgnore(discente.get());
-            return discenteDTONoCorso;
+            DiscenteDTOFormat discenteDTOFormat = DiscenteConverter.DiscenteIgnore(discente.get());
+            return discenteDTOFormat;
         }
         else
         {
@@ -47,44 +43,37 @@ public class DiscenteService {
         }
     }
 
-    public List<DiscenteDTONoCorso> getAllDiscenti()
+    //READALL
+    public List<DiscenteDTOFormat> getAllDiscenti()
     {
         List<Discente> listaDiscenti= discenteRepository.findAll();
-        List<DiscenteDTONoCorso> listaDiscentiDTONoCorso = new ArrayList<>();
+        List<DiscenteDTOFormat> listaDiscentiDTONoCorso = new ArrayList<>();
         for (Discente discente : listaDiscenti)
         {
-            DiscenteDTONoCorso discenteDTONoCorso = DiscenteConverter.DiscenteIgnore(discente);
-            listaDiscentiDTONoCorso.add(discenteDTONoCorso);
+            DiscenteDTOFormat discenteDTOFormat = DiscenteConverter.DiscenteIgnore(discente);
+            listaDiscentiDTONoCorso.add(discenteDTOFormat);
         }
         return listaDiscentiDTONoCorso;
     }
 
-    public void deleteDiscenteById(Integer id)
+    //CREATE
+    public DiscenteDTOFormat createDiscente(DiscenteDTO discenteDTO, Integer corsoId)
     {
-        if (discenteRepository.existsById(id))
-        {
-            discenteRepository.deleteById(id);
-        }
-        else
-        {
-            throw new EntityNotFoundException("Discente Not Found");
-        }
-    }
-
-    public DiscenteDTONoCorso createDiscente(DiscenteDTO discenteDTO)
-
-    {
+        Corso corso = corsoRepository.findById(corsoId).get();
         Discente discente = DiscenteConverter.DTOToEntity(discenteDTO,corsoRepository,false);
+        corso.addDiscenti(discente);
+        discente.addCorso(corso);
         discenteRepository.save(discente);
+        corsoRepository.save(corso);
         return DiscenteConverter.DiscenteIgnore(discente);
     }
 
-    public DiscenteDTONoCorso updateDiscenteById(Integer id, DiscenteDTO discenteDTO)
+    //UPDATE
+    public DiscenteDTOFormat updateDiscente(Integer id, DiscenteDTO discenteDTO)
     {
         Optional<Discente>discente = discenteRepository.findById(id);
         if (discente.isPresent())
         {
-            Discente nuovoDiscente=discente.get();
             discenteDTO.setId(id);
             Discente discenteModificato = DiscenteConverter.DTOToEntity(discenteDTO,corsoRepository,true);
             discenteRepository.save(discenteModificato);
@@ -96,27 +85,82 @@ public class DiscenteService {
         }
     }
 
-    public DiscenteDTONoCorso insertCorsoToDiscente (Integer idCorso, Integer idDiscente)
+    //DELETE
+    public void deleteDiscente(Integer id)
     {
-        Optional<Discente>discente = discenteRepository.findById(idDiscente);
-        Optional<Corso> corso = corsoRepository.findById(idCorso);
-        if (discente.isPresent() && corso.isPresent())
+        if (discenteRepository.existsById(id))
         {
-            DiscenteDTO discenteDTO = DiscenteConverter.entityToDTO(discente.get());
-            CorsoDTO corsoDTO = CorsoConverter.entityToDTO(corso.get());
-            Corso corsoSelezionato=CorsoConverter.DTOToEntity(corsoDTO,docenteRepository);
-            discenteDTO.addCorso(corsoSelezionato);
-            Discente discenteSalvato  = DiscenteConverter.DTOToEntity(discenteDTO,corsoRepository,true);
-            corsoSelezionato.addListaDiscenti(discenteSalvato);
-            //INSERISCO NEL DB
-            corsoRepository.save(corsoSelezionato);
-            discenteRepository.save(discenteSalvato);
-            DiscenteDTONoCorso discenteDTONoCorso = DiscenteConverter.DiscenteIgnore(discenteSalvato);
-            return discenteDTONoCorso;
+            Discente discente = discenteRepository.findById(id).get();
+            for (Corso corso : corsoRepository.findAll())
+            {
+                List<Discente>listaDiscenti=corso.getListaDiscenti();
+                if (listaDiscenti.contains(discente))
+                {
+                    corso.removeDiscenti(discente);
+                }
+            }
+            discenteRepository.deleteById(id);
         }
         else
         {
-            throw new EntityNotFoundException("Discente or Corso Not Found");
+            throw new EntityNotFoundException("Discente Not Found");
         }
+    }
+
+    //INSERT CORSO TO DISCENTE
+    public DiscenteDTOFormat insertCorsoToDiscente (Integer idCorso, Integer idDiscente)
+    {
+        //PRENDO CORSO E DISCENTE
+        Discente discente = discenteRepository.findById(idDiscente).orElseThrow();
+        Corso corso = corsoRepository.findById(idCorso).orElseThrow();
+        //SE ESISTONO
+        DiscenteDTO discenteDTO = DiscenteConverter.entityToDTO(discente);
+        //INSERISCO NEL DB
+        List<Corso>listaCorsi = discente.getListaCorso();
+        if (!listaCorsi.contains(corso))
+        {
+            discenteDTO.addCorso(corso);
+            corso.addDiscenti(discente);
+            corsoRepository.save(corso);
+            discenteRepository.save(discente);
+        }
+        else
+        {
+            throw new EntityNotFoundException("Corso già presente");
+        }
+        DiscenteDTOFormat discenteDTOFormat = DiscenteConverter.DiscenteIgnore(discente);
+        return discenteDTOFormat;
+    }
+
+    //REMOVE CORSO TO DISCENTE
+    public DiscenteDTOFormat removeCorsoToDiscente (Integer idCorso, Integer idDiscente)
+    {
+        //PRENDO CORSO E DISCENTE
+        Discente discente = discenteRepository.findById(idDiscente).orElseThrow();
+        Corso corso = corsoRepository.findById(idCorso).orElseThrow();
+        //SE ESISTONO
+        DiscenteDTO discenteDTO = DiscenteConverter.entityToDTO(discente);
+        //INSERISCO NEL DB
+        List<Corso>listaCorsi = discente.getListaCorso();
+        if (listaCorsi.contains(corso))
+        {
+            if (listaCorsi.size()>1)
+            {
+                discenteDTO.removeCorso(corso);
+                corso.removeDiscenti(discente);
+                corsoRepository.save(corso);
+                discenteRepository.save(discente);
+            }
+            else
+            {
+                throw new EntityNotFoundException("Il discente deve avere un corso");
+            }
+        }
+        else
+        {
+            throw new EntityNotFoundException("Corso non presente nel discente");
+        }
+        DiscenteDTOFormat discenteDTOFormat = DiscenteConverter.DiscenteIgnore(discente);
+        return discenteDTOFormat;
     }
 }

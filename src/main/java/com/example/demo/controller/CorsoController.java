@@ -1,9 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.DTO.CorsoDTO;
-import com.example.demo.DTO.CorsoDTONoDocente;
-import com.example.demo.DTO.DocenteDTO;
-import com.example.demo.entity.Corso;
+import com.example.demo.DTO.CorsoDTOFormat;
 import com.example.demo.service.CorsoService;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,38 +18,47 @@ public class CorsoController {
     }
 
     //READ
-    @GetMapping("/getCorsoById/{id_corso}")
-    public CorsoDTONoDocente getCorsoById(@PathVariable("id_corso") Integer id)
+    @GetMapping("/getCorso/{id_corso}")
+    public CorsoDTOFormat getCorso(@PathVariable("id_corso") Integer id)
     {
-        return corsoService.getCorsoById(id);
+        return corsoService.getCorso(id);
     }
 
     //READ ALL
-    @GetMapping("/getAllCorso")
-    public List<CorsoDTONoDocente> getAllCorso()
+    @GetMapping("/getAllCorsi")
+    public List<CorsoDTOFormat> getAllCorsi()
     {
-        return corsoService.getAllCorso();
+        return corsoService.getAllCorsi();
+    }
+
+    //CREATE
+    @PostMapping ("/createCorso/{id_docente}")
+    public CorsoDTOFormat createCorso(@RequestBody CorsoDTO corsoDTO, @PathVariable("id_docente") Integer idDocente)
+    {
+        return corsoService.createCorso(corsoDTO,idDocente);
     }
 
     //UPDATE
-    @PutMapping("/updateCorsoById/{id_corso}")
-    public CorsoDTONoDocente updateCorsoById(@PathVariable ("id_corso") Integer id, @RequestBody CorsoDTO corsoDTO)
+    @PutMapping("/updateCorso/{id_corso}")
+    public CorsoDTOFormat updateCorso(@PathVariable ("id_corso") Integer id, @RequestBody CorsoDTO corsoDTO)
     {
-        return corsoService.updateCorsoById(id, corsoDTO);
+        return corsoService.updateCorso(id, corsoDTO);
+    }
+
+    //UPDATE DOCENTE TO CORSO
+    @PutMapping("/updateDocenteToCorso/{id_corso}/{id_docente}")
+    public CorsoDTOFormat updateDocenteToCorso(@PathVariable ("id_corso") Integer idCorso, @PathVariable ("id_docente") Integer idDocente)
+    {
+        return corsoService.updateDocenteToCorso(idCorso,idDocente);
     }
 
     //DELETE
-    @DeleteMapping("/deleteCorsoById/{id_corso}")
-    public String deleteCorsoById(@PathVariable("id_corso") Integer id)
+    @DeleteMapping("/deleteCorso/{id_corso}")
+    public String deleteCorso(@PathVariable("id_corso") Integer id)
     {
-        corsoService.deleteCorsoById(id);
+        corsoService.deleteCorso(id);
         return id.toString() + " delete sucessfully";
     }
 
-    //INSERT
-    @PostMapping ("/insertCorso")
-    public CorsoDTONoDocente insertCorso(@RequestBody CorsoDTO corsoDTO)
-    {
-        return corsoService.insertCorso(corsoDTO);
-    }
+
 }

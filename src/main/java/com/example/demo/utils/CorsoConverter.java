@@ -4,24 +4,12 @@ import com.example.demo.entity.Corso;
 import com.example.demo.entity.Discente;
 import com.example.demo.entity.Docente;
 import com.example.demo.repository.DocenteRepository;
-import jakarta.persistence.EntityNotFoundException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class CorsoConverter {
-    public static CorsoDTONoDocente CorsoIgnore(Corso corso)
-    {
-        CorsoDTONoDocente corsoDTONoDocente = new CorsoDTONoDocente();
-        corsoDTONoDocente.setNomeCorso(corso.getNomeCorso());
-        corsoDTONoDocente.setId(corso.getId());
-        corsoDTONoDocente.setDataCorso(corso.getDataCorso());
-        corsoDTONoDocente.setDurataCorso(corso.getDurataCorso());
-        Docente docente = corso.getDocente();
-        corsoDTONoDocente.setCognomeDocente(docente.getCognome());
-
-        return corsoDTONoDocente;
-    };
 
     public static CorsoDTO entityToDTO(Corso corso)
     {
@@ -43,7 +31,7 @@ public class CorsoConverter {
         return corsoDTO;
     }
 
-    public static Corso DTOToEntity(CorsoDTO corsoDTO, DocenteRepository docenteRepository)
+    public static Corso DTOToEntity(CorsoDTO corsoDTO)
     {
         Corso corso = new Corso();
         corso.setNomeCorso(corsoDTO.getNomeCorso());
@@ -55,42 +43,36 @@ public class CorsoConverter {
             List<Discente> listaDiscenti=corsoDTO.getListaDiscenti();
             corso.setListaDiscenti(listaDiscenti);
         }
-        if (corsoDTO.getDocente() != null && corsoDTO.getDocente().getId() != null) {
-            Optional<Docente> docenteOptional = docenteRepository.findById(corsoDTO.getDocente().getId());
-            if (docenteOptional.isPresent())
-            {
-                corso.setDocente(docenteOptional.get());
-            }
-            else
-            {
-                throw new EntityNotFoundException("Docente not found");
-            }
+        if (corsoDTO.getDocente()!=null)
+        {
+            Docente docente=corsoDTO.getDocente();
+            corso.setDocente(docente);
         }
         return corso;
     }
 
-    public static Corso updateCorsoFromDTO(CorsoDTO corsoDTO, Corso corso, DocenteRepository docenteRepository)
+    public static CorsoDTOFormat CorsoFormat(Corso corso)
     {
-        if(corsoDTO.getNomeCorso()!=null)
+        CorsoDTOFormat corsoDTOFormat = new CorsoDTOFormat();
+        corsoDTOFormat.setNomeCorso(corso.getNomeCorso());
+        corsoDTOFormat.setId(corso.getId());
+        corsoDTOFormat.setDataCorso(corso.getDataCorso());
+        corsoDTOFormat.setDurataCorso(corso.getDurataCorso());
+        Docente docente = corso.getDocente();
+        if (docente!=null)
         {
-            corso.setNomeCorso(corsoDTO.getNomeCorso());
+            corsoDTOFormat.setCognomeDocente(docente.getCognome());
         }
-        if (corsoDTO.getDataCorso()!=null)
+        List<String> listaDiscenti=new ArrayList<String>();
+        if(corso.getListaDiscenti()!=null)
         {
-            corso.setDataCorso(corsoDTO.getDataCorso());
-        }
-        if (corsoDTO.getDurataCorso()!=null)
-        {
-            corso.setDurataCorso(corsoDTO.getDurataCorso());
-        }
-        if (corsoDTO.getDocente() != null && corsoDTO.getDocente().getId() != null) {
-            Optional<Docente> docenteOptional = docenteRepository.findById(corsoDTO.getDocente().getId());
-            if (docenteOptional.isPresent()) {
-                corso.setDocente(docenteOptional.get());
-            } else {
-                throw new EntityNotFoundException("Docente not found");
+            for (Discente discente : corso.getListaDiscenti())
+            {
+                String cognome=discente.getCognome();
+                listaDiscenti.add(cognome);
             }
+            corsoDTOFormat.setListaDiscenti(listaDiscenti);
         }
-        return corso;
+        return corsoDTOFormat;
     }
 }

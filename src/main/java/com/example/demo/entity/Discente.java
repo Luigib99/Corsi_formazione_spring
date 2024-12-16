@@ -45,5 +45,6 @@ public class Discente {
     public List getListaCorso() {return listaCorso;}
     public void addCorso(Corso corso) {listaCorso.add(corso);}
     public void setListaCorso (List<Corso> listaCorso) {this.listaCorso = listaCorso;}
+    public void removeCorso(Corso corso) {listaCorso.remove(corso);}
 }
 

@@ -40,6 +40,10 @@ public class Docente {
         return cognome;
     }
 
+    public void removeCorso (Corso corso)
+    {
+        listaCorsi.remove(corso);
+    }
     public void addCorso(Corso corso)
     {
         listaCorsi.add(corso);
@@ -52,6 +56,7 @@ public class Docente {
     {
         this.listaCorsi = listaCorsi;
     }
+
 
 }
 

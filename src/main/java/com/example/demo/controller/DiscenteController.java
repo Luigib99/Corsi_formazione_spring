@@ -15,40 +15,53 @@ public class DiscenteController {
         this.discenteService = discenteService;
     }
 
-    @GetMapping("/getDiscenteById/{idDiscente}")
-    public DiscenteDTONoCorso getDiscenteById(@PathVariable("idDiscente") Integer id)
+    //READ
+    @GetMapping("/getDiscente/{idDiscente}")
+    public DiscenteDTOFormat getDiscente(@PathVariable("idDiscente") Integer id)
     {
-        return discenteService.getDiscenteById(id);
+        return discenteService.getDiscente(id);
     }
 
+    //READ ALL
     @GetMapping("/getAllDiscenti")
-    public List<DiscenteDTONoCorso> getAllDiscenti()
+    public List<DiscenteDTOFormat> getAllDiscenti()
     {
         return discenteService.getAllDiscenti();
     }
 
-    @DeleteMapping("/deleteDiscenteById/{id_discente}")
-    public String deleteDiscenteById(@PathVariable("id_discente") Integer id)
+    //CREATE
+    @PostMapping ("/createDiscente/{id_corso}")
+    public DiscenteDTOFormat createDiscente(@RequestBody DiscenteDTO discenteDTO, @PathVariable("id_corso") Integer idCorso)
     {
-        discenteService.deleteDiscenteById(id);
+        return discenteService.createDiscente(discenteDTO, idCorso);
+    }
+
+    //UPDATE
+    @PutMapping("/updateDiscente/{id_discente}")
+    public DiscenteDTOFormat updateDiscente(@PathVariable ("id_discente") Integer id, @RequestBody DiscenteDTO discenteDTO)
+    {
+        return discenteService.updateDiscente(id, discenteDTO);
+    }
+
+    //DELETE
+    @DeleteMapping("/deleteDiscente/{id_discente}")
+    public String deleteDiscente(@PathVariable("id_discente") Integer id)
+    {
+        discenteService.deleteDiscente(id);
         return id.toString() + " delete sucessfully";
     }
 
-    @PostMapping ("/createDiscente")
-    public DiscenteDTONoCorso insertDiscente(@RequestBody DiscenteDTO discenteDTO)
-    {
-        return discenteService.createDiscente(discenteDTO);
-    }
-
-    @PutMapping("/updateDiscenteById/{id_discente}")
-    public DiscenteDTONoCorso updateDiscenteById(@PathVariable ("id_discente") Integer id, @RequestBody DiscenteDTO discenteDTO)
-    {
-        return discenteService.updateDiscenteById(id, discenteDTO);
-    }
-
+    //INSERT CORSO TO DISCENTE
     @PostMapping ("insertCorsoToDiscente/{id_discente}/{id_corso}")
-    public DiscenteDTONoCorso insertCorsoToDiscente(@PathVariable ("id_discente")Integer idCorso,@PathVariable ("id_corso")Integer idDiscente)
+    public DiscenteDTOFormat insertCorsoToDiscente(@PathVariable ("id_discente")Integer idCorso, @PathVariable ("id_corso")Integer idDiscente)
     {
         return discenteService.insertCorsoToDiscente(idDiscente, idCorso);
+    }
+
+    //REMOVE CORSO TO DISCENTE
+    @PutMapping ("removeCorsoToDiscente/{id_discente}/{id_corso}")
+    public DiscenteDTOFormat removeCorsoToDiscente(@PathVariable ("id_discente")Integer idCorso, @PathVariable ("id_corso")Integer idDiscente)
+    {
+        return discenteService.removeCorsoToDiscente(idDiscente, idCorso);
     }
 }

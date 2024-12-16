@@ -4,13 +4,13 @@ import com.example.demo.entity.Discente;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CorsoDTONoDocente {
+public class CorsoDTOFormat {
     private Integer id;
     private String nomeCorso;
     private String dataCorso;
     private String durataCorso;
     private String cognomeDocente;
-    private List<Discente> listaDiscenti = new ArrayList<>();
+    private List<String> listaDiscenti = new ArrayList<>();
 
     public int getId ()
     {
@@ -51,6 +51,10 @@ public class CorsoDTONoDocente {
     public String getCognomeDocente () {return cognomeDocente;}
     public void setCognomeDocente (String cognomeDocente)  {this.cognomeDocente = cognomeDocente;}
 
-    public List<Discente> getListaDiscenti () {return listaDiscenti;}
-    public void addListaDiscenti (Discente discente) {this.listaDiscenti.add(discente);}
+    public List<String> getListaDiscenti () {return listaDiscenti;}
+    public void addListaDiscenti (String cognomeDiscente) {this.listaDiscenti.add(cognomeDiscente);}
+    public void setListaDiscenti (List<String> listaDiscenti)
+    {
+        this.listaDiscenti = listaDiscenti;
+    }
 }
