@@ -14,7 +14,7 @@ public class Docente {
     private String nome;
     @Column (name="cognome")
     private String cognome;
-    @OneToMany (mappedBy = "docente")
+    @OneToMany (mappedBy = "docente",cascade = CascadeType.PERSIST, orphanRemoval = true)
     private List<Corso> listaCorsi;
 
     public void setId(Integer id)
@@ -56,7 +56,5 @@ public class Docente {
     {
         this.listaCorsi = listaCorsi;
     }
-
-
 }
 

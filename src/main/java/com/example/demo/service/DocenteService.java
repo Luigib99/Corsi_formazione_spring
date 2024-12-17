@@ -83,25 +83,7 @@ public class DocenteService {
     //DELETE
     public void deleteDocente(Integer id)
     {
-        if (docenteRepository.existsById(id))
-        {
-            Docente docente = docenteRepository.findById(id).get();
-            List<Corso> corsi = corsoRepository.findAll();
-            for(Corso corso : corsi)
-            {
-                if (corso.getDocente().equals(docente))
-                {
-                    throw new EntityNotFoundException("Il docente è associato al corso id:"+ corso.getId() + " " + corso.getNomeCorso());
-                }
-                else
-                {
-                    docenteRepository.deleteById(id);
-                }
-            }
-        }
-        else
-        {
-            throw new EntityNotFoundException("Docente Not Found");
-        }
+        Docente docente = docenteRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        docenteRepository.delete(docente);
     }
 }
