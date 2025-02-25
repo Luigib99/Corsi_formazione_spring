@@ -49,9 +49,17 @@ public class DocenteController {
 
     //DELETE
     @DeleteMapping("/deleteDocente/{id_docente}")
-    public String deleteDocente(@PathVariable ("id_docente") Integer id)
+    public void  deleteDocente(@PathVariable ("id_docente") Integer id)
     {
         docenteService.deleteDocente(id);
-        return id.toString() + " deleted Successfully";
+    }
+
+    //FILTERED DOCENTE
+
+    @GetMapping("/docente/filterDocente")
+    public List<DocenteDTOFormat> getFilteredDocenti(
+            @RequestParam(required = false) String nome,
+            @RequestParam(required = false) String cognome) {
+        return docenteService.findFilteredDocenti(nome, cognome);
     }
 }

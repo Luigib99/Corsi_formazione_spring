@@ -86,4 +86,15 @@ public class DocenteService {
         Docente docente = docenteRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         docenteRepository.delete(docente);
     }
+
+    //FILTER DOCENTE
+    public List<DocenteDTOFormat> findFilteredDocenti(String nome, String cognome) {
+        List<Docente> listaDocenti = docenteRepository.findFilteredDocenti(nome, cognome);
+        List<DocenteDTOFormat> listaDocentiDTOFormat = new ArrayList<>();
+        for (Docente docente : listaDocenti) {
+            DocenteDTOFormat docenteDTOFormat = DocenteConverter.entityToDTOFormat(docente);
+            listaDocentiDTOFormat.add(docenteDTOFormat);
+        }
+        return listaDocentiDTOFormat;
+    }
 }
