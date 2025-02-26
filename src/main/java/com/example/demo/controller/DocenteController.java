@@ -56,7 +56,7 @@ public class DocenteController {
 
     //FILTERED DOCENTE
 
-    @GetMapping("/docente/filterDocente")
+    @GetMapping("/filterDocente")
     public List<DocenteDTOFormat> getFilteredDocenti(
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String cognome) {

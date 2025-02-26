@@ -27,7 +27,6 @@ public class DocenteCustomRepositoryImpl implements DocenteCustomRepository {
         if (cognome != null && !cognome.isEmpty()) {
             predicates.add(cb.equal(root.get("cognome"), cognome));
         }
-
         query.select(root).where(predicates.toArray(new Predicate[0]));
 
         return entityManager.createQuery(query).getResultList();
