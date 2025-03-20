@@ -1,6 +1,7 @@
 package com.example.demo.DTO;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DiscenteDTOFormat {
@@ -8,7 +9,7 @@ public class DiscenteDTOFormat {
     private String nome;
     private String cognome;
     private String matricola;
-    private String dataNascita;
+    private Date dataNascita;
     private List <String> listaNomeCorsi = new ArrayList<>();
 
     public void setId(int id) {this.id = id;}
@@ -31,8 +32,8 @@ public class DiscenteDTOFormat {
     public void setMatricola (String matricola) {this.matricola = matricola;}
     public String getMatricola() {return matricola;}
 
-    public void setDataNascita(String dataNascita) {this.dataNascita = dataNascita;}
-    public String getDataNascita() {return dataNascita;}
+    public void setDataNascita(Date dataNascita) {this.dataNascita = dataNascita;}
+    public Date getDataNascita() {return dataNascita;}
 
     public List<String> getNomeCorso() {return listaNomeCorsi;}
     public void addNomeCorso(String nomeCorso)

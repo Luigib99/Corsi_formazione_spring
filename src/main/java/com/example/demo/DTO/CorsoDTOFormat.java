@@ -2,12 +2,13 @@ package com.example.demo.DTO;
 import com.example.demo.entity.Discente;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CorsoDTOFormat {
     private Integer id;
     private String nomeCorso;
-    private String dataCorso;
+    private Date dataCorso;
     private String durataCorso;
     private String cognomeDocente;
     private List<String> listaDiscenti = new ArrayList<>();
@@ -20,7 +21,6 @@ public class CorsoDTOFormat {
     {
         this.id = id;
     }
-
     public void setNomeCorso(String nomeCorso)
     {
         this.nomeCorso = nomeCorso;
@@ -30,11 +30,11 @@ public class CorsoDTOFormat {
         return nomeCorso;
     }
 
-    public void setDataCorso (String dataCorso)
+    public void setDataCorso (Date dataCorso)
     {
         this.dataCorso = dataCorso;
     }
-    public String getDataCorso()
+    public Date getDataCorso()
     {
         return dataCorso;
     }

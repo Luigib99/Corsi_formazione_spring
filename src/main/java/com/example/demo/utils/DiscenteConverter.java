@@ -8,21 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DiscenteConverter {
-    public static DiscenteDTOFormat DiscenteIgnore(Discente discente)
-    {
-        DiscenteDTOFormat discenteDTOFormat = new DiscenteDTOFormat();
-        discenteDTOFormat.setId(discente.getId());
-        discenteDTOFormat.setNome(discente.getNome());
-        discenteDTOFormat.setCognome(discente.getCognome());
-        discenteDTOFormat.setMatricola(discente.getMatricola());
-        discenteDTOFormat.setDataNascita(discente.getDataNascita());
-        List<Corso> listaCorsi = discente.getListaCorso();
-        for(Corso corso : listaCorsi)
-        {
-            discenteDTOFormat.addNomeCorso(corso.getNomeCorso());
-        }
-        return discenteDTOFormat;
-    };
 
     public static DiscenteDTO entityToDTO(Discente discente)
     {
@@ -32,12 +17,18 @@ public class DiscenteConverter {
         discenteDTO.setCognome(discente.getCognome());
         discenteDTO.setMatricola(discente.getMatricola());
         discenteDTO.setDataNascita(discente.getDataNascita());
-        List<Corso> listaCorsi = discente.getListaCorso();
-        discenteDTO.setListaCorso(listaCorsi);
+        List <CorsoDTO> listaCorsiDTO = new ArrayList<>();
+        if (discente.getListaCorsi() != null){
+            for (Corso corso : discente.getListaCorsi()) {
+                CorsoDTO corsoDTO =CorsoConverter.entityToDTO(corso);
+                listaCorsiDTO.add(corsoDTO);
+            }
+        }
+        discenteDTO.setListaCorsi(listaCorsiDTO);
         return discenteDTO;
     };
 
-    public static Discente DTOToEntity(DiscenteDTO discenteDTO, CorsoRepository corsoRepository, boolean update)
+    public static Discente DTOToEntity(DiscenteDTO discenteDTO)
     {
         Discente discente = new Discente();
         discente.setId(discenteDTO.getId());
@@ -45,15 +36,16 @@ public class DiscenteConverter {
         discente.setCognome(discenteDTO.getCognome());
         discente.setMatricola(discenteDTO.getMatricola());
         discente.setDataNascita(discenteDTO.getDataNascita());
-        if(update)
+        List<Corso>listaCorsi = new ArrayList<>();
+        if(discenteDTO.getListaCorsi()!=null)
         {
-            List<Corso> listaCorsiDTO = discenteDTO.getListaCorso();
-            discente.setListaCorso(listaCorsiDTO);
+            List<CorsoDTO> listaCorsiDTO = discenteDTO.getListaCorsi();
+            for(CorsoDTO corsoDTO : listaCorsiDTO){
+                Corso corso = CorsoConverter.DTOToEntity(corsoDTO);
+                listaCorsi.add(corso);
+            }
         }
-        else
-        {
-            discente.setListaCorso(new ArrayList<>());
-        }
+        discente.setListaCorsi(listaCorsi);
         return discente;
     }
 }

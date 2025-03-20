@@ -30,30 +30,71 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+		<!-- JWT -->
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-api</artifactId>
+			<version>0.11.5</version>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-impl</artifactId>
+			<version>0.11.5</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt-jackson</artifactId>
+			<version>0.11.5</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- Spring Boot Starter Data JPA: Enables Spring Data JPA support, allowing database interaction -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+
+		<!-- Spring Boot Starter Web: Provides essential components for building web applications (REST APIs, etc.) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- Spring Boot Starter Security: Adds security capabilities, including authentication and authorization -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
+		<!-- Lombok: Used to reduce boilerplate code (getters, setters, constructors, etc.) -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.30</version>
+			<scope>provided</scope> <!-- Lombok is only used during compile-time -->
+		</dependency>
+
+		<!-- Spring Boot DevTools: Provides additional development tools, like automatic restarts and live reload -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
-			<scope>runtime</scope>
-			<optional>true</optional>
+			<scope>runtime</scope> <!-- DevTools is only needed at runtime -->
+			<optional>true</optional> <!-- Optional dependency, not required for production -->
 		</dependency>
+
+		<!-- PostgreSQL JDBC Driver: Driver for connecting to a PostgreSQL database -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<scope>runtime</scope>
+			<scope>runtime</scope> <!-- Runtime dependency as it’s only needed when running the application -->
 		</dependency>
+
+		<!-- Spring Boot Starter Test: Provides testing support (JUnit, Mockito, etc.) for unit and integration tests -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<scope>test</scope> <!-- Test scope, used only for tests -->
 		</dependency>
 	</dependencies>
 
@@ -65,5 +106,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>

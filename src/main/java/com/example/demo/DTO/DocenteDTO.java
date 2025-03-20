@@ -1,8 +1,17 @@
 package com.example.demo.DTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class DocenteDTO {
 
     private Integer id;
@@ -10,39 +19,12 @@ public class DocenteDTO {
     private String cognome;
     private List<CorsoDTO> listaCorsi = new ArrayList<CorsoDTO>();
 
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
-    public Integer getId()
-    {
-        return id;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-    public String getNome() {
-        return nome;
-    }
-
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
-    public String getCognome() {
-        return cognome;
-    }
-
     public void addCorso(CorsoDTO corso)
     {
         listaCorsi.add(corso);
     }
-    public List<CorsoDTO> getListaCorsi()
+    public void deleteCorso(CorsoDTO corso)
     {
-        return listaCorsi;
-    }
-    public void setListaCorsi(List<CorsoDTO> listaCorsi)
-    {
-        this.listaCorsi = listaCorsi;
+        listaCorsi.remove(corso);
     }
 }

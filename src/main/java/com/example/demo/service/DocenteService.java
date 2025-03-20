@@ -27,13 +27,13 @@ public class DocenteService {
     }
 
     //READ
-    public DocenteDTOFormat getDocente(Integer id)
+    public DocenteDTO getDocente(Integer id)
     {
         Optional <Docente> docente= docenteRepository.findById(id);
         if(docente.isPresent())
         {
-            DocenteDTOFormat docenteDTOFormat = DocenteConverter.entityToDTOFormat(docente.get());
-            return docenteDTOFormat;
+            DocenteDTO docenteDTO = DocenteConverter.entityToDTO(docente.get());
+            return docenteDTO;
         }
         else
         {
@@ -42,17 +42,17 @@ public class DocenteService {
     }
 
     //READ ALL
-    public List<DocenteDTOFormat>getAllDocenti()
+    public List<DocenteDTO>getAllDocenti()
     {
         List<Docente> listaDocenti = docenteRepository.findAll();
-        List<DocenteDTOFormat> listaDocentiDTOFormat=new ArrayList<DocenteDTOFormat>();
+        List<DocenteDTO> listaDocentiDTO=new ArrayList<DocenteDTO>();
 
         for (Docente docente : listaDocenti)
         {
-            DocenteDTOFormat docenteDTOFormat = DocenteConverter.entityToDTOFormat(docente);
-            listaDocentiDTOFormat.add(docenteDTOFormat);
+            DocenteDTO docenteDTO = DocenteConverter.entityToDTO(docente);
+            listaDocentiDTO.add(docenteDTO);
         }
-        return listaDocentiDTOFormat;
+        return listaDocentiDTO;
     }
 
     //CREATE
@@ -64,7 +64,7 @@ public class DocenteService {
     }
 
     //UPDATE
-    public DocenteDTOFormat updateDocente(Integer id, DocenteDTO docenteDTO)
+    public DocenteDTO updateDocente(Integer id, DocenteDTO docenteDTO)
     {
         Optional <Docente> docente = docenteRepository.findById(id);
         if(docente.isPresent()) {
@@ -72,7 +72,7 @@ public class DocenteService {
             Docente docenteModificato = DocenteConverter.DTOToEntity(docenteDTO);
             docenteModificato.setListaCorsi(docente.get().getListaCorsi());
             docenteRepository.save(docenteModificato);
-            return DocenteConverter.entityToDTOFormat(docenteModificato);
+            return DocenteConverter.entityToDTO(docenteModificato);
         }
         else
         {
@@ -88,13 +88,13 @@ public class DocenteService {
     }
 
     //FILTER DOCENTE
-    public List<DocenteDTOFormat> findFilteredDocenti(String nome, String cognome) {
-        List<Docente> listaDocenti = docenteRepository.findFilteredDocenti(nome, cognome);
-        List<DocenteDTOFormat> listaDocentiDTOFormat = new ArrayList<>();
+    public List<DocenteDTO> findFilteredDocenti(Integer id, String nome, String cognome, String corso) {
+        List<Docente> listaDocenti = docenteRepository.findFilteredDocenti(id, nome, cognome, corso);
+        List<DocenteDTO> listaDocentiDTO = new ArrayList<>();
         for (Docente docente : listaDocenti) {
-            DocenteDTOFormat docenteDTOFormat = DocenteConverter.entityToDTOFormat(docente);
-            listaDocentiDTOFormat.add(docenteDTOFormat);
+            DocenteDTO docenteDTO = DocenteConverter.entityToDTO(docente);
+            listaDocentiDTO.add(docenteDTO);
         }
-        return listaDocentiDTOFormat;
+        return listaDocentiDTO;
     }
 }

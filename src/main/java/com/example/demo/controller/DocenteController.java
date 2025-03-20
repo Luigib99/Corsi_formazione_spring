@@ -21,14 +21,14 @@ public class DocenteController {
 
     //READ
     @GetMapping("/getDocente/{idDocente}")
-    public DocenteDTOFormat getDocente(@PathVariable ("idDocente") Integer id)
+    public DocenteDTO getDocente(@PathVariable ("idDocente") Integer id)
     {
         return docenteService.getDocente(id);
     }
 
     //FIND ALL
     @GetMapping("/getAllDocenti")
-    public List<DocenteDTOFormat> getALLDocenti()
+    public List<DocenteDTO> getALLDocenti()
     {
         return docenteService.getAllDocenti();
     }
@@ -42,7 +42,7 @@ public class DocenteController {
 
     //UPDATE
     @PutMapping("/updateDocente/{id_docente}")
-    public DocenteDTOFormat updateDocente(@PathVariable ("id_docente") Integer id, @RequestBody DocenteDTO docenteDTO)
+    public DocenteDTO updateDocente(@PathVariable ("id_docente") Integer id, @RequestBody DocenteDTO docenteDTO)
     {
         return docenteService.updateDocente(id,docenteDTO);
     }
@@ -57,9 +57,11 @@ public class DocenteController {
     //FILTERED DOCENTE
 
     @GetMapping("/filterDocente")
-    public List<DocenteDTOFormat> getFilteredDocenti(
+    public List<DocenteDTO> getFilteredDocenti(
+            @RequestParam (required = false) Integer id,
             @RequestParam(required = false) String nome,
-            @RequestParam(required = false) String cognome) {
-        return docenteService.findFilteredDocenti(nome, cognome);
+            @RequestParam(required = false) String cognome,
+            @RequestParam(required = false) String corso) {
+        return docenteService.findFilteredDocenti(id, nome, cognome, corso);
     }
 }

@@ -1,24 +1,29 @@
 package com.example.demo.repository;
 
-import com.example.demo.entity.Docente;
+import com.example.demo.entity.Discente;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
-public class DocenteCustomRepositoryImpl implements DocenteCustomRepository {
+public class DiscenteCustomRepositoryImpl implements DiscenteCustomRepository{
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
-    public List<Docente> findFilteredDocenti(Integer id, String nome, String cognome, String corso) {
+    public List<Discente> findFilteredDiscenti(Integer id, String nome, String cognome, Date dataNascita, String matricola) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-        CriteriaQuery<Docente> query = cb.createQuery(Docente.class);
-        Root<Docente> root = query.from(Docente.class);
+        CriteriaQuery<Discente> query = cb.createQuery(Discente.class);
+        Root<Discente> root = query.from(Discente.class);
         List<Predicate> predicates = new ArrayList<>();
 
         if (id != null && id!=0) {
@@ -30,8 +35,11 @@ public class DocenteCustomRepositoryImpl implements DocenteCustomRepository {
         if (cognome != null && !cognome.isEmpty()) {
             predicates.add(cb.equal(root.get("cognome"), cognome));
         }
-        if(corso != null && !corso.isEmpty()) {
-            predicates.add(cb.equal(root.get("corso"), corso));
+        if(dataNascita != null) {
+            predicates.add(cb.equal(root.get("dataNascita"), dataNascita));
+        }
+        if(matricola != null && !matricola.isEmpty()) {
+            predicates.add(cb.equal(root.get("matricola"), matricola));
         }
         query.select(root).where(predicates.toArray(new Predicate[0]));
 

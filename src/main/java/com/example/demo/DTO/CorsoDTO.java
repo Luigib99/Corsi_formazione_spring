@@ -1,58 +1,28 @@
 package com.example.demo.DTO;
 import com.example.demo.entity.Discente;
 import com.example.demo.entity.Docente;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 
 public class CorsoDTO {
     private Integer id;
     private String nomeCorso;
-    private String dataCorso;
+    private Date dataCorso;
     private String durataCorso;
-    private Docente docente;
-    private List<Discente> listaDiscenti = new ArrayList<>();
+    private DocenteDTO docente;
+    private List<DiscenteDTO> listaDiscenti = new ArrayList<>();
 
-    public Integer getId ()
-    {
-        return id;
-    }
-    public void setId (Integer id)
-    {
-        this.id = id;
-    }
-
-    public void setNomeCorso(String nomeCorso)
-    {
-        this.nomeCorso = nomeCorso;
-    }
-    public String getNomeCorso ()
-    {
-        return nomeCorso;
-    }
-
-    public void setDataCorso (String dataCorso)
-    {
-        this.dataCorso = dataCorso;
-    }
-    public String getDataCorso()
-    {
-        return dataCorso;
-    }
-
-    public void setDurataCorso (String durataCorso)
-    {
-        this.durataCorso = durataCorso;
-    }
-    public String getDurataCorso ()
-    {
-        return durataCorso;
-    }
-
-    public Docente getDocente () {return docente;}
-    public void setDocente (Docente docente)  {this.docente = docente;}
-
-    public List<Discente> getListaDiscenti () {return listaDiscenti;}
-    public void addListaDiscenti (Discente discente) {this.listaDiscenti.add(discente);}
-    public void removeDiscenti (Discente discente) {this.listaDiscenti.remove(discente);}
+    public void addListaDiscenti (DiscenteDTO discenteDTO) {this.listaDiscenti.add(discenteDTO);}
+    public void removeDiscenti (DiscenteDTO discenteDTO) {this.listaDiscenti.remove(discenteDTO);}
 }

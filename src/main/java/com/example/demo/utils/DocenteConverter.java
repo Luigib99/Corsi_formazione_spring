@@ -18,13 +18,12 @@ public class DocenteConverter {
         docenteDTO.setId(docente.getId());
         docenteDTO.setNome(docente.getNome());
         docenteDTO.setCognome(docente.getCognome());
-        CorsoConverter corsoConverter = new CorsoConverter();
         List<Corso> listaCorsi = docente.getListaCorsi();
         if (listaCorsi != null)
         {
             for (Corso corso: listaCorsi)
             {
-                CorsoDTO corsoDTO = corsoConverter.entityToDTO(corso);
+                CorsoDTO corsoDTO = CorsoConverter.entityToDTO(corso);
                 docenteDTO.addCorso(corsoDTO);
             }
         }
@@ -48,25 +47,5 @@ public class DocenteConverter {
             }
         }
         return docente;
-    }
-
-    public static DocenteDTOFormat entityToDTOFormat(Docente docente)
-    {
-        DocenteDTOFormat docenteDTOFormat = new DocenteDTOFormat();
-        docenteDTOFormat.setId(docente.getId());
-        docenteDTOFormat.setNome(docente.getNome());
-        docenteDTOFormat.setCognome(docente.getCognome());
-        List<String> listaCorsiFormat = new ArrayList<String>();
-        List<Corso> listaCorsi = docente.getListaCorsi();
-        if(listaCorsi != null)
-        {
-            for (Corso corso: listaCorsi)
-            {
-                String nomeCorso = corso.getNomeCorso();
-                listaCorsiFormat.add(nomeCorso);
-            }
-            docenteDTOFormat.setListaCorsi(listaCorsiFormat);
-        }
-        return docenteDTOFormat;
     }
 }
