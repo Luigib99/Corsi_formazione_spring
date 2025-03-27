@@ -11,7 +11,6 @@ import com.example.demo.repository.DocenteRepository;
 import com.example.demo.utils.CorsoConverter;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -31,13 +30,13 @@ public class CorsoService {
     }
 
     //READ
-    public CorsoDTO getCorso(Integer id)
+    public CorsoDTOFormat getCorso(Integer id)
     {
         Optional<Corso>corso = corsoRepository.findById(id);
         if (corso.isPresent())
         {
-            CorsoDTO corsoDTO = CorsoConverter.entityToDTO(corso.get());
-            return corsoDTO;
+            CorsoDTOFormat corsoDTOFormat = CorsoConverter.CorsoFormat(corso.get());
+            return corsoDTOFormat;
         }
         else
         {
@@ -46,19 +45,19 @@ public class CorsoService {
     }
 
     //READALL
-    public List<CorsoDTO> getAllCorsi()
+    public List<CorsoDTOFormat> getAllCorsi()
     {
         List<Corso> listaCorsi = corsoRepository.findAll();
-        List<CorsoDTO> listaCorsiDTO = new ArrayList<>();
+        List<CorsoDTOFormat> listaCorsiDTOFormat = new ArrayList<>();
         for (Corso corso : listaCorsi)
         {
-            listaCorsiDTO.add(CorsoConverter.entityToDTO(corso));
+            listaCorsiDTOFormat.add(CorsoConverter.CorsoFormat(corso));
         }
-        return listaCorsiDTO;
+        return listaCorsiDTOFormat;
     }
 
     //UPDATE
-    public CorsoDTO updateCorso(Integer id, CorsoDTO corsoDTO)
+    public CorsoDTOFormat updateCorso(Integer id, CorsoDTO corsoDTO)
     {
         Optional<Corso>corso = corsoRepository.findById(id);
         if (corso.isPresent())
@@ -68,12 +67,36 @@ public class CorsoService {
             corsoModificato.setDocente(corso.get().getDocente());
             corsoModificato.setListaDiscenti(corso.get().getListaDiscenti());
             corsoRepository.save(corsoModificato);
-            return CorsoConverter.entityToDTO(corsoModificato);
+            return CorsoConverter.CorsoFormat(corsoModificato);
         }
         else
         {
             throw new EntityNotFoundException("Corso Not Found");
         }
+    }
+
+    //UPDATE DOCENTE TO CORSO
+    public CorsoDTOFormat updateDocenteToCorso(Integer idCorso, Integer idDocente)
+    {
+        Optional<Corso>corso = corsoRepository.findById(idCorso);
+        Optional<Docente>docente = docenteRepository.findById(idDocente);
+        if (corso.isPresent() && docente.isPresent())
+        {
+            if(corso.get().getDocente().getId()!=docente.get().getId())
+            {
+                corso.get().setDocente(docente.get());
+                corsoRepository.save(corso.get());
+            }
+            else
+            {
+                throw new EntityNotFoundException("il docente tiene già il corso selezionato");
+            }
+        }
+        else
+        {
+            throw new EntityNotFoundException("il docente o il corso non esiste");
+        }
+        return CorsoConverter.CorsoFormat(corso.get());
     }
 
     //DELETE
@@ -121,37 +144,13 @@ public class CorsoService {
     }
 
     //CREATE
-    public CorsoDTO createCorso(CorsoDTO corsoDTO, Integer idDocente)
+    public CorsoDTOFormat createCorso(CorsoDTO corsoDTO, Integer idDocente)
     {
         Corso corso = CorsoConverter.DTOToEntity(corsoDTO);
         Docente docente = docenteRepository.findById(idDocente).get();
         corso.setDocente(docente);
         docente.addCorso(corso);
         corsoRepository.save(corso);
-        return CorsoConverter.entityToDTO(corso);
+        return CorsoConverter.CorsoFormat(corso);
     }
-
-    //UPDATE DOCENTE TO CORSO
-    /*public CorsoDTO updateDocenteToCorso(Integer idCorso, Integer idDocente)
-    {
-        Optional<Corso>corso = corsoRepository.findById(idCorso);
-        Optional<Docente>docente = docenteRepository.findById(idDocente);
-        if (corso.isPresent() && docente.isPresent())
-        {
-            if(corso.get().getDocente().getId()!=docente.get().getId())
-            {
-                corso.get().setDocente(docente.get());
-                corsoRepository.save(corso.get());
-            }
-            else
-            {
-                throw new EntityNotFoundException("il docente tiene già il corso selezionato");
-            }
-        }
-        else
-        {
-            throw new EntityNotFoundException("il docente o il corso non esiste");
-        }
-        return CorsoConverter.entityToDTO(corso.get());
-    }*/
 }

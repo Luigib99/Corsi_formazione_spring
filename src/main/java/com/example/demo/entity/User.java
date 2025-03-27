@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "user_test")
@@ -23,4 +24,5 @@ public class User {
 
     @Column(nullable=false)
     private String password;
+
 }

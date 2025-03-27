@@ -1,9 +1,17 @@
 package com.example.demo.DTO;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class DiscenteDTOFormat {
     private int id;
     private String nome;
@@ -12,34 +20,10 @@ public class DiscenteDTOFormat {
     private Date dataNascita;
     private List <String> listaNomeCorsi = new ArrayList<>();
 
-    public void setId(int id) {this.id = id;}
-    public int getId() {
-        return id;
-    }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-    public String getNome() {
-        return nome;
-    }
-
-    public void setCognome(String cognome) {
-        this.cognome = cognome;
-    }
-    public String getCognome() {return cognome;}
-
-    public void setMatricola (String matricola) {this.matricola = matricola;}
-    public String getMatricola() {return matricola;}
-
-    public void setDataNascita(Date dataNascita) {this.dataNascita = dataNascita;}
-    public Date getDataNascita() {return dataNascita;}
-
-    public List<String> getNomeCorso() {return listaNomeCorsi;}
     public void addNomeCorso(String nomeCorso)
     {
         listaNomeCorsi.add(nomeCorso);
     }
-    public void setListaNomeCorsi (List<String>listaNomeCorsi) {this.listaNomeCorsi = listaNomeCorsi;}
 
 }

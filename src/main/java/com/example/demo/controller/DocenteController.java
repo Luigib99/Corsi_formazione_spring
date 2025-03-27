@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/docente")
+@RequestMapping("/api/docente")
 
 public class DocenteController {
 
@@ -21,14 +21,14 @@ public class DocenteController {
 
     //READ
     @GetMapping("/getDocente/{idDocente}")
-    public DocenteDTO getDocente(@PathVariable ("idDocente") Integer id)
+    public DocenteDTOFormat getDocente(@PathVariable ("idDocente") Integer id)
     {
         return docenteService.getDocente(id);
     }
 
     //FIND ALL
     @GetMapping("/getAllDocenti")
-    public List<DocenteDTO> getALLDocenti()
+    public List<DocenteDTOFormat> getALLDocenti()
     {
         return docenteService.getAllDocenti();
     }
@@ -42,7 +42,7 @@ public class DocenteController {
 
     //UPDATE
     @PutMapping("/updateDocente/{id_docente}")
-    public DocenteDTO updateDocente(@PathVariable ("id_docente") Integer id, @RequestBody DocenteDTO docenteDTO)
+    public DocenteDTOFormat updateDocente(@PathVariable ("id_docente") Integer id, @RequestBody DocenteDTO docenteDTO)
     {
         return docenteService.updateDocente(id,docenteDTO);
     }
@@ -57,7 +57,7 @@ public class DocenteController {
     //FILTERED DOCENTE
 
     @GetMapping("/filterDocente")
-    public List<DocenteDTO> getFilteredDocenti(
+    public List<DocenteDTOFormat> getFilteredDocenti(
             @RequestParam (required = false) Integer id,
             @RequestParam(required = false) String nome,
             @RequestParam(required = false) String cognome,
